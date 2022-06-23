@@ -1,0 +1,51 @@
+@font-face {
+	font-family: crimes;
+	src: url(/assets/crimes.ttf);
+}
+
+html {
+	background-color: black;
+}
+
+#goat {
+	position: absolute;
+	max-width: 500px;
+	text-align: center;
+}
+
+#bolt {
+	position: absolute;
+	filter: drop-shadow(0 0px 30px #008cff);
+	display: none;
+}
+
+#sacrifice-btn {
+	border-radius: 10px;
+	width: 300px;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	text-align: center;
+	bottom: 10px;
+	filter: drop-shadow(3px 3px 1px #65a376);
+	cursor: pointer;
+	font-family: crimes;
+	font-size: 3em;
+	background: transparent;
+	border: transparent;
+	color: #bf0000;
+}
+
+.bg {
+	position: relative;
+	background-image: url("/assets/bg.jpg");
+	background-repeat: repeat-x;
+	background-size: contain;
+	height: 600px;
+}
+
+.explainer {
+	color: white;
+}
