@@ -1,22 +1,29 @@
+// allows picking a random element within any array.
 Array.prototype.random = function () {
 	return this[Math.floor((Math.random() * this.length))];
 }
 
+// return a random number between the mix and max value.
 function randomBetween(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
+// delay (ugly sleep) for the given value in milliseconds.
 function delay(milliseconds) {
 	return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
+// preload a given image and return it's HTMLImageElement.
 function preload(url) {
 	var img = new Image();
 	img.src = url;
 	return img;
 }
 
+// define the goat's behaviour.
 class Goat {
+	direction = "left";
+
 	constructor() {
 		this.element = document.getElementById("goat");
 	}
@@ -29,12 +36,18 @@ class Goat {
 		// get the width of the window.
 		var windowWidth = window.innerWidth;
 
+		// always toggle the walking direction.
+		if (this.direction === "left") {
+			this.direction = "right";
+		} else {
+			this.direction = "left";
+		}
 		// get the direction of travel.
-		var direction = ['right', 'left'].random();
+		// var direction = ['right', 'left'].random();
 
 		var num;
 
-		switch (direction) {
+		switch (this.direction) {
 			case "right":
 				this.element.style.transform = "scaleX(-1)";
 				num = randomBetween(goatStartingPosition, windowWidth - goatWidth)
@@ -45,16 +58,13 @@ class Goat {
 				break;
 		}
 
-		console.log(direction, num);
-
-
 		var milliseconds = 5;
 
 		// mark that the goat is currently walking;
 		this.walking = true;
 		(async function (parent) {
 			// going right, increment.
-			if (direction === "right") {
+			if (parent.direction === "right") {
 				for (let i = goatStartingPosition; i < num; i++) {
 					if (parent.dead) { return }
 					parent.element.style.left = i + "px";
@@ -74,17 +84,14 @@ class Goat {
 	}
 }
 
-// TODO: Use an atlas, don't be a fucking pig.
+// preload our assets into an atlas.
 var atlas = {
-	goatSkeleton: "/assets/goat-skeleton.png",
-	goat: "/assets/goat.png"
+	goatDead: preload("/assets/goat.png"),
+	goatSkeleton: preload("/assets/goat-skeleton.png"),
+	audio: {
+		thunder: new Audio("/assets/thunder.mp3")
+	}
 }
-
-// we'll use those in a minute.
-preload("/assets/goat-skeleton.png");
-preload("/assets/goat.png");
-
-var thunder = new Audio("/assets/thunder.mp3");
 
 var intervalId;
 
@@ -94,30 +101,28 @@ var btn = document.getElementById("sacrifice-btn");
 btn.addEventListener("click", () => {
 	clearInterval(intervalId);
 	goat.dead = true;
-	goat.element.setAttribute("src", "/assets/goat.png")
+	goat.element.setAttribute("src", atlas.goatDead.src)
 
 	// play the thunderclap, but make sure it plays again if user spams.
-	thunder.currentTime = 0;
-	thunder.play();
+	atlas.audio.thunder.currentTime = 0;
+	atlas.audio.thunder.play();
 
 	var rect = goat.element.getBoundingClientRect();
 
 	(async function () {
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < 10; i++) {
 			if (i % 3) {
 				bolt.style.display = "inline";
 				bolt.style.top = -(rect.top + rect.height / 2) + "px";
 				bolt.style.left = (rect.left + rect.width / 2) + "px";
-				// goat.element.style.filter = "invert(100%)";
-				goat.element.setAttribute("src", "/assets/goat-skeleton.png");
+				goat.element.setAttribute("src", atlas.goatSkeleton.src);
 			} else {
-				// goat.element.style.filter = "invert(0%)";
-				goat.element.setAttribute("src", "/assets/goat.png");
+				goat.element.setAttribute("src", atlas.goatDead.src);
 			}
 			await delay(50);
 		}
 		bolt.style.display = "none";
-		goat.element.setAttribute("src", "/assets/goat.png");
+		goat.element.setAttribute("src", atlas.goatDead.src);
 	})()
 
 	goat.element.style.transform = "scaleY(-1)";
