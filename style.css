@@ -50,7 +50,7 @@ html {
 	color: white;
 }
 
-@media screen and (width < 1024px) {
+@media (min-width: 200px) and (max-width: 1024px) {
 	#goat {
 		max-width: 150px;
 	}
