@@ -49,3 +49,21 @@ html {
 .explainer {
 	color: white;
 }
+
+@media screen and (width < 1024px) {
+	#goat {
+		max-width: 150px;
+	}
+
+	#sacrifice-btn {
+		font-size: 2em;
+	}
+
+	#bolt {
+		max-width: 150px;
+	}
+
+	.bg {
+		height: 180px;
+	}
+}
