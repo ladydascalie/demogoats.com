@@ -55,6 +55,10 @@ html {
 	color: white;
 }
 
+a {
+	color: cornflowerblue;
+}
+
 @media (min-width: 200px) and (max-width: 1024px) {
 	#goat {
 		max-width: 150px;
