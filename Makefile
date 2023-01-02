@@ -1,2 +1,2 @@
 serve:
-	caddy file-server -listen :8080
+	caddy file-server --listen :8080
